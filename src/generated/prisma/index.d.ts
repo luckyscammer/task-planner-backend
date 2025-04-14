@@ -35,6 +35,24 @@ export type Task = $Result.DefaultSelection<Prisma.$TaskPayload>
 export type TaskAssignment = $Result.DefaultSelection<Prisma.$TaskAssignmentPayload>
 
 /**
+ * Enums
+ */
+export namespace $Enums {
+  export const Role: {
+  ADMIN: 'ADMIN',
+  MANAGER: 'MANAGER',
+  USER: 'USER'
+};
+
+export type Role = (typeof Role)[keyof typeof Role]
+
+}
+
+export type Role = $Enums.Role
+
+export const Role: typeof $Enums.Role
+
+/**
  * ##  Prisma Client ʲˢ
  *
  * Type-safe database client for TypeScript & Node.js
@@ -1257,7 +1275,7 @@ export namespace Prisma {
     id: string | null
     fullName: string | null
     email: string | null
-    role: string | null
+    role: $Enums.Role | null
     createdAt: Date | null
   }
 
@@ -1265,7 +1283,7 @@ export namespace Prisma {
     id: string | null
     fullName: string | null
     email: string | null
-    role: string | null
+    role: $Enums.Role | null
     createdAt: Date | null
   }
 
@@ -1380,7 +1398,7 @@ export namespace Prisma {
     id: string
     fullName: string
     email: string
-    role: string
+    role: $Enums.Role
     createdAt: Date
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
@@ -1455,7 +1473,7 @@ export namespace Prisma {
       id: string
       fullName: string
       email: string
-      role: string
+      role: $Enums.Role
       createdAt: Date
     }, ExtArgs["result"]["user"]>
     composites: {}
@@ -1885,7 +1903,7 @@ export namespace Prisma {
     readonly id: FieldRef<"User", 'String'>
     readonly fullName: FieldRef<"User", 'String'>
     readonly email: FieldRef<"User", 'String'>
-    readonly role: FieldRef<"User", 'String'>
+    readonly role: FieldRef<"User", 'Role'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
   }
     
@@ -5733,6 +5751,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Role'
+   */
+  export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role'>
+    
+
+
+  /**
+   * Reference to a field of type 'Role[]'
+   */
+  export type ListEnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role[]'>
+    
+
+
+  /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -5784,7 +5816,7 @@ export namespace Prisma {
     id?: StringFilter<"User"> | string
     fullName?: StringFilter<"User"> | string
     email?: StringFilter<"User"> | string
-    role?: StringFilter<"User"> | string
+    role?: EnumRoleFilter<"User"> | $Enums.Role
     createdAt?: DateTimeFilter<"User"> | Date | string
     projects?: ProjectListRelationFilter
     assignments?: TaskAssignmentListRelationFilter
@@ -5807,7 +5839,7 @@ export namespace Prisma {
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
     fullName?: StringFilter<"User"> | string
-    role?: StringFilter<"User"> | string
+    role?: EnumRoleFilter<"User"> | $Enums.Role
     createdAt?: DateTimeFilter<"User"> | Date | string
     projects?: ProjectListRelationFilter
     assignments?: TaskAssignmentListRelationFilter
@@ -5831,7 +5863,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"User"> | string
     fullName?: StringWithAggregatesFilter<"User"> | string
     email?: StringWithAggregatesFilter<"User"> | string
-    role?: StringWithAggregatesFilter<"User"> | string
+    role?: EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
 
@@ -6021,7 +6053,7 @@ export namespace Prisma {
     id?: string
     fullName: string
     email: string
-    role: string
+    role: $Enums.Role
     createdAt?: Date | string
     projects?: ProjectCreateNestedManyWithoutCreatedByInput
     assignments?: TaskAssignmentCreateNestedManyWithoutUserInput
@@ -6031,7 +6063,7 @@ export namespace Prisma {
     id?: string
     fullName: string
     email: string
-    role: string
+    role: $Enums.Role
     createdAt?: Date | string
     projects?: ProjectUncheckedCreateNestedManyWithoutCreatedByInput
     assignments?: TaskAssignmentUncheckedCreateNestedManyWithoutUserInput
@@ -6041,7 +6073,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     projects?: ProjectUpdateManyWithoutCreatedByNestedInput
     assignments?: TaskAssignmentUpdateManyWithoutUserNestedInput
@@ -6051,7 +6083,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     projects?: ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
     assignments?: TaskAssignmentUncheckedUpdateManyWithoutUserNestedInput
@@ -6061,7 +6093,7 @@ export namespace Prisma {
     id?: string
     fullName: string
     email: string
-    role: string
+    role: $Enums.Role
     createdAt?: Date | string
   }
 
@@ -6069,7 +6101,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -6077,7 +6109,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -6275,6 +6307,13 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type EnumRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -6346,6 +6385,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
     _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type EnumRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleWithAggregatesFilter<$PrismaModel> | $Enums.Role
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRoleFilter<$PrismaModel>
+    _max?: NestedEnumRoleFilter<$PrismaModel>
   }
 
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -6597,6 +6646,10 @@ export namespace Prisma {
     set?: string
   }
 
+  export type EnumRoleFieldUpdateOperationsInput = {
+    set?: $Enums.Role
+  }
+
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
   }
@@ -6827,6 +6880,13 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type NestedEnumRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
+  }
+
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -6864,6 +6924,16 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type NestedEnumRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleWithAggregatesFilter<$PrismaModel> | $Enums.Role
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRoleFilter<$PrismaModel>
+    _max?: NestedEnumRoleFilter<$PrismaModel>
   }
 
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -7076,7 +7146,7 @@ export namespace Prisma {
     id?: string
     fullName: string
     email: string
-    role: string
+    role: $Enums.Role
     createdAt?: Date | string
     assignments?: TaskAssignmentCreateNestedManyWithoutUserInput
   }
@@ -7085,7 +7155,7 @@ export namespace Prisma {
     id?: string
     fullName: string
     email: string
-    role: string
+    role: $Enums.Role
     createdAt?: Date | string
     assignments?: TaskAssignmentUncheckedCreateNestedManyWithoutUserInput
   }
@@ -7142,7 +7212,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     assignments?: TaskAssignmentUpdateManyWithoutUserNestedInput
   }
@@ -7151,7 +7221,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     assignments?: TaskAssignmentUncheckedUpdateManyWithoutUserNestedInput
   }
@@ -7301,7 +7371,7 @@ export namespace Prisma {
     id?: string
     fullName: string
     email: string
-    role: string
+    role: $Enums.Role
     createdAt?: Date | string
     projects?: ProjectCreateNestedManyWithoutCreatedByInput
   }
@@ -7310,7 +7380,7 @@ export namespace Prisma {
     id?: string
     fullName: string
     email: string
-    role: string
+    role: $Enums.Role
     createdAt?: Date | string
     projects?: ProjectUncheckedCreateNestedManyWithoutCreatedByInput
   }
@@ -7368,7 +7438,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     projects?: ProjectUpdateManyWithoutCreatedByNestedInput
   }
@@ -7377,7 +7447,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     projects?: ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
   }
