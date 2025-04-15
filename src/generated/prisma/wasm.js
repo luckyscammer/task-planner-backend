@@ -170,6 +170,14 @@ exports.Role = exports.$Enums.Role = {
   USER: 'USER'
 };
 
+exports.TaskStatus = exports.$Enums.TaskStatus = {
+  UNASSIGNED: 'UNASSIGNED',
+  ASSIGNED: 'ASSIGNED',
+  IN_PROGRESS: 'IN_PROGRESS',
+  PENDING_REVIEW: 'PENDING_REVIEW',
+  COMPLETED: 'COMPLETED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Project: 'Project',

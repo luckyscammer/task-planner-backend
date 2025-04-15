@@ -1,16 +1,35 @@
 import { Request, Response } from 'express';
 import * as taskService from '@/services/task.service';
 import * as projectService from '@/services/project.service';
+import * as userService from '@/services/user.service';
+import * as taskAssignmentService from '@/services/taskAssignment.service';
 
 export const createTask = async (req: Request, res: Response) => {
   try {
-    const { projectId } = req.body;
+    const { projectId, userId, ...rest } = req.body;
+
     const project = await projectService.getProjectById(projectId);
     if (!project) {
       return res.status(404).json({ error: 'Project not found' });
     }
 
-    const task = await taskService.createTask(req.body);
+    const task = await taskService.createTask({
+      ...rest,
+      project: { connect: { id: projectId } },
+    });
+
+    if (userId) {
+      const user = await userService.getUserById(userId);
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      await taskAssignmentService.assignUserToTask({
+        user: { connect: { id: userId } },
+        task: { connect: { id: task.id } },
+      });
+    }
+
     res.status(201).json(task);
   } catch (error) {
     res.status(500).json({ error: 'Failed to create task', details: error });
