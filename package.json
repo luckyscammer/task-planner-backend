@@ -8,7 +8,6 @@
     "start": "node dist/server.js",
     "ts-run": "ts-node --require tsconfig-paths/register"
   },
-
   "keywords": [],
   "author": "Pliffdax",
   "license": "ISC",
@@ -17,7 +16,8 @@
     "@prisma/client": "^6.6.0",
     "cors": "^2.8.5",
     "express": "^5.1.0",
-    "prisma": "^6.6.0"
+    "prisma": "^6.6.0",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
