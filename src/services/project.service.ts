@@ -1,6 +1,7 @@
 import { prisma } from '@/config/prisma';
+import {Prisma } from '@/generated/prisma'
 
-export const createProject = async (data: { name: string; description?: string; createdById: string }) => {
+export const createProject = async (data: Prisma.ProjectCreateInput) => {
   return prisma.project.create({
     data,
   });
@@ -23,7 +24,7 @@ export const getProjectById = async (id: string) => {
   });
 };
 
-export const updateProject = async (id: string, data: { name?: string; description?: string }) => {
+export const updateProject = async (id: string, data: Prisma.ProjectUpdateInput) => {
   return prisma.project.update({
     where: { id },
     data,

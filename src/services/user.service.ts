@@ -1,10 +1,8 @@
 import { prisma } from '@/config/prisma';
-import { Role } from '@/models/role';
+import { Prisma } from "@/generated/prisma";
 
-export const createUser = async (data: { fullName: string; email: string; role: Role }) => {
-  return prisma.user.create({
-    data,
-  });
+export const createUser = async (data: Prisma.UserCreateInput) => {
+  return prisma.user.create({ data });
 };
 
 export const getAllUsers = async () => {
@@ -12,20 +10,13 @@ export const getAllUsers = async () => {
 };
 
 export const getUserById = async (id: string) => {
-  return prisma.user.findUnique({
-    where: { id },
-  });
+  return prisma.user.findUnique({ where: { id } });
 };
 
-export const updateUser = async (id: string, data: { fullName?: string; email?: string; role?: Role }) => {
-  return prisma.user.update({
-    where: { id },
-    data,
-  });
+export const updateUser = async (id: string, data: Prisma.UserUpdateInput) => {
+  return prisma.user.update({ where: { id }, data });
 };
 
 export const deleteUser = async (id: string) => {
-  return prisma.user.delete({
-    where: { id },
-  });
+  return prisma.user.delete({ where: { id } });
 };
