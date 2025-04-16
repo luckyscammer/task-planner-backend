@@ -1,5 +1,5 @@
 import { prisma } from '@/config/prisma';
-import { Prisma } from '@/generated/prisma';
+import { Prisma, TaskStatus } from '@/generated/prisma';
 
 export const createTask = async (data: Prisma.TaskCreateInput) => {
   return prisma.task.create({ data });
@@ -20,3 +20,18 @@ export const updateTask = async (id: string, data: Prisma.TaskUpdateInput) => {
 export const deleteTask = async (id: string) => {
   return prisma.task.delete({ where: { id } });
 };
+
+export const getTasksWithFilters = async (filters: Prisma.TaskWhereInput) => {
+  return prisma.task.findMany({
+    where: filters,
+    include: {
+      project: true,
+      assignments: {
+        include: {
+          user: true,
+        },
+      },
+    },
+  });
+};
+

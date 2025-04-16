@@ -40,3 +40,31 @@ export const unassignUser = async (req: Request, res: Response) => {
   await service.unassignUserFromTask(userId, taskId);
   res.status(204).send();
 };
+
+export const getAssignment = async (req: Request, res: Response) => {
+  const { userId, taskId } = req.query;
+
+  if (!userId || !taskId) {
+    return res.status(400).json({ error: 'userId and taskId are required' });
+  }
+
+  const assignment = await service.getAssignmentByUserAndTask(userId as string, taskId as string);
+  if (!assignment) return res.status(404).json({ error: 'Assignment not found' });
+
+  res.json(assignment);
+};
+
+export const updateAssignment = async (req: Request, res: Response) => {
+  const { userId, taskId, ...updateData } = req.body;
+
+  if (!userId || !taskId) {
+    return res.status(400).json({ error: 'userId and taskId are required' });
+  }
+
+  try {
+    const updated = await service.updateAssignment(userId, taskId, updateData);
+    res.json(updated);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to update assignment', details: error });
+  }
+};

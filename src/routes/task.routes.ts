@@ -14,5 +14,6 @@ router.get('/:id', taskController.getTaskById);
 router.put('/:id', validate(TaskUpdateSchema), taskController.updateTask);
 // @ts-ignore
 router.delete('/:id', taskController.deleteTask);
+router.get('/filter', taskController.getFilteredTasks);
 
 export default router;

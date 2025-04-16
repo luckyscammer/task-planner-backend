@@ -1,3 +1,4 @@
+import { parseQueryToFilters } from "@/utils/parseQueryToFilters";
 import { Request, Response } from 'express';
 import * as taskService from '@/services/task.service';
 import * as projectService from '@/services/project.service';
@@ -79,5 +80,15 @@ export const deleteTask = async (req: Request, res: Response) => {
     res.status(204).send();
   } catch (error) {
     res.status(500).json({ error: 'Failed to delete task', details: error });
+  }
+};
+
+export const getFilteredTasks = async (req: Request, res: Response) => {
+  try {
+    const filters = parseQueryToFilters(req.query);
+    const result = await taskService.getTasksWithFilters(filters);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch filtered tasks', details: error });
   }
 };

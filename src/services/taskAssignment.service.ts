@@ -33,3 +33,25 @@ export const unassignUserFromTask = async (userId: string, taskId: string) => {
     where: { taskId_userId: { userId, taskId } },
   });
 };
+
+export const getAssignmentByUserAndTask = async (userId: string, taskId: string) => {
+  return prisma.taskAssignment.findUnique({
+    where: { taskId_userId: { userId, taskId } },
+    include: {
+      user: true,
+      task: true,
+    },
+  });
+};
+
+export const updateAssignment = async (
+  userId: string,
+  taskId: string,
+  data: Prisma.TaskAssignmentUpdateInput
+) => {
+  return prisma.taskAssignment.update({
+    where: { taskId_userId: { userId, taskId } },
+    data,
+  });
+};
+
