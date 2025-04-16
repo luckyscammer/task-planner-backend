@@ -3,3 +3,4 @@
 /task-planner-backend.iml
 /dist/
 /.env
+/src/generated/

@@ -65,5 +65,5 @@ model TaskAssignment {
   task         Task              @relation(fields: [taskId], references: [id])
   user         User              @relation(fields: [userId], references: [id])
 
-  @@id([taskId, userId]) // Складений первинний ключ
+  @@id([taskId, userId])
 }
