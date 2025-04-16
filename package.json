@@ -6,7 +6,8 @@
     "dev": "ts-node-dev --respawn --transpile-only --require tsconfig-paths/register src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "ts-run": "ts-node --require tsconfig-paths/register"
+    "ts-run": "ts-node --require tsconfig-paths/register",
+    "seed": "ts-node --require tsconfig-paths/register prisma/seed.ts"
   },
   "keywords": [],
   "author": "Pliffdax",

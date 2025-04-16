@@ -5,6 +5,7 @@ import { TaskSchema, TaskUpdateSchema } from '@/validators/task.schema';
 
 const router = Router();
 
+router.get('/filter', taskController.getFilteredTasks);
 // @ts-ignore
 router.post('/', validate(TaskSchema), taskController.createTask);
 router.get('/', taskController.getAllTasks);
@@ -14,6 +15,5 @@ router.get('/:id', taskController.getTaskById);
 router.put('/:id', validate(TaskUpdateSchema), taskController.updateTask);
 // @ts-ignore
 router.delete('/:id', taskController.deleteTask);
-router.get('/filter', taskController.getFilteredTasks);
 
 export default router;
