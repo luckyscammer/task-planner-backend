@@ -1,13 +1,17 @@
 import { PrismaClient, TaskStatus, Role } from '@/generated/prisma';
+import bcrypt from "bcryptjs";
 const prisma = new PrismaClient();
 
 async function main() {
   console.log('🚀 Seeding...');
 
+  const hashedSeedPassword = await bcrypt.hash('admin123', 10)
+
   const alice = await prisma.user.create({
     data: {
       fullName: 'Alice Johnson',
       email: 'alice@example.com',
+      password: hashedSeedPassword,
       role: Role.USER,
     },
   });
@@ -16,6 +20,7 @@ async function main() {
     data: {
       fullName: 'Bob Smith',
       email: 'bob@example.com',
+      password: hashedSeedPassword,
       role: Role.USER,
     },
   });
