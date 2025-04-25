@@ -52,7 +52,6 @@ export const updateProject = async (req: Request, res: Response) => {
   res.json(project);
 };
 
-
 export const deleteProject = async (req: Request, res: Response) => {
   const { id } = req.params;
 
@@ -65,3 +64,18 @@ export const deleteProject = async (req: Request, res: Response) => {
   res.status(204).send();
 };
 
+export const getProjectStatusController = async (req: Request, res: Response) => {
+  try {
+    const { id: projectId } = req.params;
+
+    const status = await projectService.getProjectStatus(projectId);
+
+    return res.status(200).json(status);
+  } catch (error) {
+    console.error('Error in getProjectStatusController:', error);
+    return res.status(500).json({
+      error: 'Failed to retrieve project status',
+      details: (error as Error).message,
+    });
+  }
+};

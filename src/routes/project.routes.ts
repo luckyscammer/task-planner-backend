@@ -12,6 +12,9 @@ router.get('/', projectController.getAllProjects);
 router.get('/:id', projectController.getProjectById);
 // @ts-ignore
 router.put('/:id', validate(ProjectUpdateSchema), projectController.updateProject);
+// @ts-ignore
 router.delete('/:id', projectController.deleteProject);
+// @ts-ignore
+router.get('/:id/status', projectController.getProjectStatusController);
 
 export default router;
