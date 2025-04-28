@@ -1,75 +1,95 @@
-import { PrismaClient, TaskStatus, Role } from '@/generated/prisma';
-import bcrypt from "bcryptjs";
+import { PrismaClient, Role, TaskStatus } from '@/generated/prisma';
+import bcrypt from 'bcryptjs';
+
 const prisma = new PrismaClient();
+const SALT_ROUNDS = 10;
+const plainPassword = 'admin123';
+
+const randHex = (n = 3) =>
+  [...crypto.getRandomValues(new Uint8Array(n))]
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('');
+
+async function uniqueEmail(base: string) {
+  let email: string;
+  do {
+    email = `${base}.${randHex()}@example.com`.toLowerCase();
+  } while (await prisma.user.findUnique({ where: { email } }));
+  return email;
+}
+
+const usersSeed = [
+  { fullName: 'Admin Master', role: Role.ADMIN,  base: 'admin'  },
+  { fullName: 'Alice Johnson', role: Role.USER, base: 'alice'  },
+  { fullName: 'Bob Smith',     role: Role.USER, base: 'bob'    },
+  { fullName: 'Charlie King',  role: Role.USER, base: 'charlie'},
+  { fullName: 'Diana Prince',  role: Role.USER, base: 'diana'  },
+];
+
+const taskTitles = [
+  'Setup backend', 'Design frontend UI', 'Configure CI/CD',
+  'Write unit tests', 'Prepare documentation', 'Deploy to staging',
+];
+
+const statuses: TaskStatus[] = [
+  TaskStatus.UNASSIGNED, TaskStatus.ASSIGNED,
+  TaskStatus.IN_PROGRESS, TaskStatus.PENDING_REVIEW,
+  TaskStatus.COMPLETED,
+];
+
+const rnd = <T,>(arr: T[]) => arr[Math.floor(Math.random() * arr.length)];
 
 async function main() {
-  console.log('🚀 Seeding...');
+  console.log('🚀 Seeding…');
+  const hashed = await bcrypt.hash(plainPassword, SALT_ROUNDS);
 
-  const hashedSeedPassword = await bcrypt.hash('admin123', 10)
+  const users = [];
+  for (const u of usersSeed) {
+    users.push(
+      await prisma.user.create({
+        data: {
+          fullName: u.fullName,
+          role: u.role,
+          email: await uniqueEmail(u.base),
+          password: hashed,
+        },
+      }),
+    );
+  }
 
-  const alice = await prisma.user.create({
-    data: {
-      fullName: 'Alice Johnson',
-      email: 'alice@example.com',
-      password: hashedSeedPassword,
-      role: Role.USER,
-    },
-  });
+  for (const owner of users) {
+    const project = await prisma.project.create({
+      data: {
+        name: `Project of ${owner.fullName.split(' ')[0]}`,
+        createdBy: { connect: { id: owner.id } },
+      },
+    });
 
-  const bob = await prisma.user.create({
-    data: {
-      fullName: 'Bob Smith',
-      email: 'bob@example.com',
-      password: hashedSeedPassword,
-      role: Role.USER,
-    },
-  });
+    const tasks = await Promise.all(
+      Array.from({ length: 3 }).map(() =>
+        prisma.task.create({
+          data: {
+            name: rnd(taskTitles),
+            status: rnd(statuses),
+            project: { connect: { id: project.id } },
+          },
+        }),
+      ),
+    );
 
-  const project = await prisma.project.create({
-    data: {
-      name: 'Planner Alpha',
-      createdBy: {
-        connect: { id: alice.id }
-      }
-    },
-  });
-
-  const task1 = await prisma.task.create({
-    data: {
-      name: 'Setup backend',
-      status: TaskStatus.IN_PROGRESS,
-      project: { connect: { id: project.id } },
-    },
-  });
-
-  const task2 = await prisma.task.create({
-    data: {
-      name: 'Design frontend UI',
-      status: TaskStatus.UNASSIGNED,
-      project: { connect: { id: project.id } },
-    },
-  });
-
-  await prisma.taskAssignment.create({
-    data: {
-      user: { connect: { id: alice.id } },
-      task: { connect: { id: task1.id } },
-    },
-  });
-
-  await prisma.taskAssignment.create({
-    data: {
-      user: { connect: { id: bob.id } },
-      task: { connect: { id: task2.id } },
-    },
-  });
+    for (const task of tasks) {
+      await prisma.taskAssignment.create({
+        data: {
+          task: { connect: { id: task.id } },
+          user: { connect: { id: rnd(users).id } },
+        },
+      });
+    }
+  }
 
   console.log('✅ Seeding complete!');
 }
 
 main()
-  .then(() => prisma.$disconnect())
-  .catch((e) => {
-    console.error(e);
-    prisma.$disconnect();
-  });
+  .catch(console.error)
+  .finally(() => prisma.$disconnect());
