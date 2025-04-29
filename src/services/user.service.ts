@@ -9,6 +9,17 @@ export const getAllUsers = async () => {
   return prisma.user.findMany();
 };
 
+export const searchUsers = async (q: string) => {
+  return prisma.user.findMany({
+    where: {
+      OR: [
+        { fullName:   { contains: q, mode: 'insensitive' } },
+        { email:      { contains: q, mode: 'insensitive' } },
+      ]
+    }
+  });
+};
+
 export const getUserById = async (id: string) => {
   return prisma.user.findUnique({ where: { id } });
 };

@@ -10,12 +10,18 @@ export const createUser = async (req: Request, res: Response) => {
   }
 };
 
-export const getAllUsers = async (_req: Request, res: Response) => {
+export const getAllUsers = async (req: Request, res: Response) => {
   try {
-    const users = await userService.getAllUsers();
+    const { search } = req.query;
+    let users;
+    if (typeof search === 'string' && search.trim() !== '') {
+      users = await userService.searchUsers(search);
+    } else {
+      users = await userService.getAllUsers();
+    }
     res.json(users);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to get users', details: error });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to get users', details: err });
   }
 };
 
