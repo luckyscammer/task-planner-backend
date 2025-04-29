@@ -32,8 +32,10 @@ const taskTitles = [
 ];
 
 const statuses: TaskStatus[] = [
-  TaskStatus.UNASSIGNED, TaskStatus.ASSIGNED,
-  TaskStatus.IN_PROGRESS, TaskStatus.PENDING_REVIEW,
+  TaskStatus.UNASSIGNED,
+  TaskStatus.ASSIGNED,
+  TaskStatus.IN_PROGRESS,
+  TaskStatus.PENDING_REVIEW,
   TaskStatus.COMPLETED,
 ];
 
@@ -53,7 +55,7 @@ async function main() {
           email: await uniqueEmail(u.base),
           password: hashed,
         },
-      }),
+      })
     );
   }
 
@@ -65,19 +67,21 @@ async function main() {
       },
     });
 
-    const tasks = await Promise.all(
-      Array.from({ length: 3 }).map(() =>
-        prisma.task.create({
-          data: {
-            name: rnd(taskTitles),
-            status: rnd(statuses),
-            project: { connect: { id: project.id } },
-          },
-        }),
-      ),
-    );
+    for (let i = 0; i < 3; i++) {
+      const status = rnd(statuses);
+      const progress =
+        status === TaskStatus.COMPLETED     ? 100 :
+          status === TaskStatus.IN_PROGRESS   ? 50  : 0;
 
-    for (const task of tasks) {
+      const task = await prisma.task.create({
+        data: {
+          name: rnd(taskTitles),
+          status,
+          progress,
+          project: { connect: { id: project.id } },
+        },
+      });
+
       await prisma.taskAssignment.create({
         data: {
           task: { connect: { id: task.id } },
