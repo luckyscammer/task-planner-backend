@@ -14,7 +14,7 @@ export const TaskSchema = z.object({
   status: TaskStatusEnum,
   projectId: z.string().uuid('Invalid project ID'),
   userId: z.string().uuid().optional(),
-  deadline: z.string().datetime().optional(),
+  deadline: z.string().datetime({ offset: true }).optional().nullable(),
   progress: z.number().min(0).max(100).optional(),
 });
 
