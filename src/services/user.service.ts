@@ -13,8 +13,8 @@ export const searchUsers = async (q: string) => {
   return prisma.user.findMany({
     where: {
       OR: [
-        { fullName:   { contains: q, mode: 'insensitive' } },
-        { email:      { contains: q, mode: 'insensitive' } },
+        { fullName: { contains: q, mode: 'insensitive' } },
+        { email: { contains: q, mode: 'insensitive' } },
       ]
     }
   });
