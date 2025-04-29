@@ -5,10 +5,26 @@ export const createTask = async (
   data: Prisma.TaskCreateInput
 ) => {
   if ('status' in data && data.status) {
-    (data as any).progress =
-      data.status === TaskStatus.COMPLETED ? 100 :
-        data.status === TaskStatus.IN_PROGRESS ? 50 : 0;
+    let newProgress = 0;
+    switch (data.status as TaskStatus) {
+      case TaskStatus.COMPLETED:
+        newProgress = 100;
+        break;
+      case TaskStatus.PENDING_REVIEW:
+        newProgress = 75;
+        break;
+      case TaskStatus.IN_PROGRESS:
+        newProgress = 50;
+        break;
+      case TaskStatus.ASSIGNED:
+      case TaskStatus.UNASSIGNED:
+      default:
+        newProgress = 0;
+        break;
+    }
+    ;(data as any).progress = newProgress;
   }
+
   return prisma.task.create({ data });
 };
 
@@ -28,8 +44,10 @@ export const updateTask = async (
     let newProgress = 0;
     switch (data.status as TaskStatus) {
       case TaskStatus.COMPLETED:
-      case TaskStatus.PENDING_REVIEW:
         newProgress = 100;
+        break;
+      case TaskStatus.PENDING_REVIEW:
+        newProgress = 75;
         break;
       case TaskStatus.IN_PROGRESS:
         newProgress = 50;

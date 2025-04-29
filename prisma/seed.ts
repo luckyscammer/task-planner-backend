@@ -71,7 +71,8 @@ async function main() {
       const status = rnd(statuses);
       const progress =
         status === TaskStatus.COMPLETED     ? 100 :
-          status === TaskStatus.IN_PROGRESS   ? 50  : 0;
+          status === TaskStatus.PENDING_REVIEW ? 75  :
+            status === TaskStatus.IN_PROGRESS    ? 50  : 0;
 
       const task = await prisma.task.create({
         data: {
