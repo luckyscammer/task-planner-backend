@@ -7,7 +7,7 @@ const plainPassword = 'admin123';
 
 const randHex = (n = 3) =>
   [...crypto.getRandomValues(new Uint8Array(n))]
-    .map(b => b.toString(16).padStart(2, '0'))
+    .map((b) => b.toString(16).padStart(2, '0'))
     .join('');
 
 async function uniqueEmail(base: string) {
@@ -19,16 +19,20 @@ async function uniqueEmail(base: string) {
 }
 
 const usersSeed = [
-  { fullName: 'Admin Master', role: Role.ADMIN,  base: 'admin'  },
-  { fullName: 'Alice Johnson', role: Role.USER, base: 'alice'  },
-  { fullName: 'Bob Smith',     role: Role.USER, base: 'bob'    },
-  { fullName: 'Charlie King',  role: Role.USER, base: 'charlie'},
-  { fullName: 'Diana Prince',  role: Role.USER, base: 'diana'  },
+  { fullName: 'Admin Master', role: Role.ADMIN, base: 'admin' },
+  { fullName: 'Alice Johnson', role: Role.USER, base: 'alice' },
+  { fullName: 'Bob Smith', role: Role.USER, base: 'bob' },
+  { fullName: 'Charlie King', role: Role.USER, base: 'charlie' },
+  { fullName: 'Diana Prince', role: Role.USER, base: 'diana' },
 ];
 
 const taskTitles = [
-  'Setup backend', 'Design frontend UI', 'Configure CI/CD',
-  'Write unit tests', 'Prepare documentation', 'Deploy to staging',
+  'Setup backend',
+  'Design frontend UI',
+  'Configure CI/CD',
+  'Write unit tests',
+  'Prepare documentation',
+  'Deploy to staging',
 ];
 
 const statuses: TaskStatus[] = [
@@ -40,6 +44,11 @@ const statuses: TaskStatus[] = [
 ];
 
 const rnd = <T,>(arr: T[]) => arr[Math.floor(Math.random() * arr.length)];
+
+function randomDeadline(): Date {
+  const offset = Math.floor(Math.random() * 22) - 7;
+  return new Date(Date.now() + offset * 24 * 60 * 60 * 1000);
+}
 
 async function main() {
   console.log('🚀 Seeding…');
@@ -70,15 +79,20 @@ async function main() {
     for (let i = 0; i < 3; i++) {
       const status = rnd(statuses);
       const progress =
-        status === TaskStatus.COMPLETED     ? 100 :
-          status === TaskStatus.PENDING_REVIEW ? 75  :
-            status === TaskStatus.IN_PROGRESS    ? 50  : 0;
+        status === TaskStatus.COMPLETED
+          ? 100
+          : status === TaskStatus.PENDING_REVIEW
+            ? 75
+            : status === TaskStatus.IN_PROGRESS
+              ? 50
+              : 0;
 
       const task = await prisma.task.create({
         data: {
           name: rnd(taskTitles),
           status,
           progress,
+          deadline: randomDeadline(),
           project: { connect: { id: project.id } },
         },
       });
