@@ -26,6 +26,7 @@ export default defineConfig({
         'src/services/auth.service.ts',
         'src/services/auth.service.ts',
         'src/server.ts',
+        'src/app.ts',
         'vitest.config.ts',
       ],
     },
